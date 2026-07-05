@@ -1,0 +1,80 @@
+!pip install ultralytics
+import sys
+import os
+import cv2
+import numpy as np
+from ultralytics import YOLO
+
+def load_yolov8_model(device="cpu", variant="yolov8s"):
+    # YOLOv8 のモデルをロード
+    model = YOLO(f"{variant}.pt")
+    model.to(device)
+    return model
+
+def detect_person_boxes(model, img_bgr, conf_thres=0.25):
+    # YOLOv8 は BGR でも推論可能
+    results = model(img_bgr, conf=conf_thres)
+
+    boxes = []
+    r = results[0]
+
+    for box in r.boxes:
+        cls = int(box.cls[0])
+        conf = float(box.conf[0])
+        x1, y1, x2, y2 = box.xyxy[0].tolist()
+
+        # COCO class 0 = person
+        if cls == 0:
+            boxes.append((int(x1), int(y1), int(x2), int(y2), conf))
+
+    return boxes
+
+def draw_red_boxes(img_bgr, boxes, thickness=2):
+    for x1, y1, x2, y2, conf in boxes:
+        cv2.rectangle(img_bgr, (x1, y1), (x2, y2), (0, 0, 255), thickness)
+        label = f"person {conf:.2f}"
+        (tw, th), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
+        cv2.rectangle(img_bgr, (x1, y1 - th - baseline), (x1 + tw, y1), (0, 0, 255), -1)
+        cv2.putText(img_bgr, label, (x1, y1 - baseline),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+    return img_bgr
+
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Detect persons in an image using YOLOv8.")
+    parser.add_argument("--input", default=r"default\test_input.jpg")
+    parser.add_argument("--output", default=r"result\result_out.jpg")
+    parser.add_argument("--conf", type=float, default=0.25)
+    parser.add_argument("--device", default="cpu", choices=["cpu", "cuda"])
+    parser.add_argument("--thickness", type=int, default=2)
+
+    # Jupyter の -f 引数を無視
+    args, unknown = parser.parse_known_args()
+
+    if not os.path.isfile(args.input):
+        print(f"Input file not found: {args.input}")
+        sys.exit(1)
+
+    img = cv2.imread(args.input)
+    if img is None:
+        print("Failed to read the image.")
+        sys.exit(1)
+
+    out_dir = os.path.dirname(args.output)
+    if out_dir and not os.path.exists(out_dir):
+        os.makedirs(out_dir, exist_ok=True)
+
+    device = args.device
+
+    model = load_yolov8_model(device=device, variant="yolov8s")
+
+    boxes = detect_person_boxes(model, img, conf_thres=args.conf)
+
+    img_out = draw_red_boxes(img.copy(), boxes, thickness=args.thickness)
+
+    cv2.imwrite(args.output, img_out)
+    print(f"Saved: {args.output}")
+    print(f"Detected persons: {len(boxes)}")
+
+if __name__ == "__main__":
+    main()

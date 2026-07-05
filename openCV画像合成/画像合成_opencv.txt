@@ -1,0 +1,23 @@
+# 完成版
+!pip install opencv-python
+import cv2
+import matplotlib.pyplot as plt
+
+def read_img_to_rgb(image_path):
+    img = cv2.imread(image_path)
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    return img_rgb
+
+def show_img(img):
+    plt.imshow(img)
+    plt.axis('off')
+
+nenit27_img = read_img_to_rgb('nenit27_02.jpg')
+nenit39_img = read_img_to_rgb('nenit39_03.jpg')
+
+alpha=0.5
+beta=1-alpha
+image=cv2.addWeighted(nenit27_img,alpha,nenit39_img,beta,0.0)
+
+cv2.imwrite('blended.jpg',image)
+show_img(image)

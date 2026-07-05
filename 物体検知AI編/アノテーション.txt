@@ -1,0 +1,21 @@
+import cv2
+import numpy as np
+
+img = cv2.imread('mask.png')
+h, w, _ = img.shape
+
+# 赤色の範囲を抽出（BGR）
+lower = np.array([0, 0, 200])
+upper = np.array([50, 50, 255])
+mask = cv2.inRange(img, lower, upper)
+
+contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+with open('mask.txt', 'w') as f:
+    for cnt in contours:
+        x, y, bw, bh = cv2.boundingRect(cnt)
+        cx = (x + bw / 2) / w
+        cy = (y + bh / 2) / h
+        nw = bw / w
+        nh = bh / h
+        f.write(f"0 {cx} {cy} {nw} {nh}\n")

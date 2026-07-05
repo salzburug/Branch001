@@ -1,0 +1,3 @@
+python download_youtube.py "https://www.youtube.com/watch?v=8WaUbjIyLiM" -o "C:\Users\salzburug\Downloads"
+
+C:\Users\salzburug\Desktop\python\.venv\Scripts\python.exe .\download_youtube.py "https://www.youtube.com/watch?v=WBqmdxWbUgk" -o output

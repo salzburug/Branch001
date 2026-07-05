@@ -1,0 +1,36 @@
+import os
+from PIL import Image
+
+folder1 = "folder1/"
+folder2 = "folder2/"
+output_folder = "output/"
+
+os.makedirs(output_folder, exist_ok=True)
+
+# folder1 の画像をループ
+for filename in os.listdir(folder1):
+    if filename.lower().endswith((".jpg", ".png", ".jpeg")):
+        img1_path = os.path.join(folder1, filename)
+        img2_path = os.path.join(folder2, filename)
+
+        # folder2 に同名ファイルがあるか確認
+        if not os.path.exists(img2_path):
+            print(f"{filename} は folder2 にありません")
+            continue
+
+        img1 = Image.open(img1_path)
+        img2 = Image.open(img2_path)
+
+        # 横に並べるための新しいキャンバスを作成
+        width = img1.width + img2.width
+        height = max(img1.height, img2.height)
+
+        merged = Image.new("RGB", (width, height))
+        merged.paste(img1, (0, 0))
+        merged.paste(img2, (img1.width, 0))
+
+        # 保存
+        output_path = os.path.join(output_folder, filename)
+        merged.save(output_path)
+
+        print(f"{filename} を合成しました → {output_path}")
