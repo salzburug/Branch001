@@ -16,7 +16,7 @@
 4. 下記の「外部ファイル」セクションに共有リンクを貼り付ける。
 
 ## 外部ファイル
-- ObjectDetectionCourse.zip: <ここにアップロードした共有リンクを貼ってください>
+- ObjectDetectionCourse.zip: https://drive.google.com/drive/u/0/home
 
 ---
 ※ 私がアップロードの代行を行う場合は、使用するストレージと認証情報（安全な方法での提供）を教えてください。代行が不要であれば、この README にリンクを貼ってください。
