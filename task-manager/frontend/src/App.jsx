@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import './detail.css';
 
 const PRIORITIES = ['low', 'medium', 'high'];
 const DEFAULT_TASK = { title: '', description: '', dueDate: '', priority: 'medium' };
@@ -20,10 +21,6 @@ function App() {
 
   const apiUrl = '/api/tasks';
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
   const fetchTasks = async () => {
     try {
       const searchParams = new URLSearchParams();
@@ -37,6 +34,10 @@ function App() {
       setError('タスクの読み込みに失敗しました。');
     }
   };
+
+  useEffect(() => {
+    fetchTasks();
+  }, [filterBy, priorityFilter, sortBy]);
 
   const resetForm = () => {
     setForm(DEFAULT_TASK);
@@ -109,6 +110,10 @@ function App() {
     });
     setEditMode(true);
     setError('');
+  };
+
+  const handleSelect = (task) => {
+    setSelectedTask(task);
   };
 
   const filteredTasks = useMemo(() => {
@@ -230,12 +235,42 @@ function App() {
                   <div className="task-actions">
                     <button onClick={() => handleComplete(task)}>{task.completed ? '未完了に戻す' : '完了'}</button>
                     <button className="secondary" onClick={() => handleEdit(task)}>編集</button>
+                    <button className="secondary" onClick={() => handleSelect(task)}>詳細</button>
                     <button className="danger" onClick={() => handleDelete(task)}>削除</button>
                   </div>
                 </article>
               ))
             )}
           </div>
+          {selectedTask && (
+            <section className="detail-panel">
+              <h3>タスク詳細</h3>
+              <div className="detail-row">
+                <div>
+                  <strong>タイトル</strong>
+                  <p>{selectedTask.title}</p>
+                </div>
+                <div>
+                  <strong>優先度</strong>
+                  <p>{selectedTask.priority === 'low' ? '低' : selectedTask.priority === 'medium' ? '中' : '高'}</p>
+                </div>
+              </div>
+              <div className="detail-row">
+                <div>
+                  <strong>期限</strong>
+                  <p>{selectedTask.dueDate ? new Date(selectedTask.dueDate).toLocaleDateString('ja-JP') : '未設定'}</p>
+                </div>
+                <div>
+                  <strong>状態</strong>
+                  <p>{selectedTask.completed ? '完了' : '未完了'}</p>
+                </div>
+              </div>
+              <div>
+                <strong>詳細</strong>
+                <p>{selectedTask.description || '説明はありません。'}</p>
+              </div>
+            </section>
+          )}
         </section>
       </main>
     </div>

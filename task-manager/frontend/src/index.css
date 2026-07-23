@@ -1,0 +1,284 @@
+:root {
+  color-scheme: light;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f2f5fb;
+  color: #1f2937;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #eef2ff 0%, #f7f7ff 100%);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.header p {
+  margin: 8px 0 0;
+  color: #4b5563;
+}
+
+.theme-toggle {
+  background: #2563eb;
+  border: none;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: #1d4ed8;
+}
+
+.container {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr 1.8fr;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+.task-form label,
+.filters label {
+  display: block;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.task-form input,
+.task-form textarea,
+.task-form select,
+.filters select {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: white;
+  color: #111827;
+}
+
+.task-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+button,
+.task-actions button {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-weight: 700;
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+button:hover,
+.task-actions button:hover {
+  transform: translateY(-1px);
+}
+
+button.secondary {
+  background: #e2e8f0;
+  color: #1f2937;
+}
+
+button.danger {
+  background: #ef4444;
+  color: white;
+}
+
+button:not(.secondary):not(.danger) {
+  background: #2563eb;
+  color: white;
+}
+
+.error {
+  color: #dc2626;
+  margin-top: 12px;
+}
+
+.task-list-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+}
+
+.task-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.task-card {
+  background: #f8fafc;
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.task-card.completed {
+  opacity: 0.7;
+  text-decoration: line-through;
+}
+
+.task-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.task-top h3 {
+  margin: 0;
+}
+
+.badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge.low {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge.medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge.high {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 14px;
+  color: #475569;
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.empty-state {
+  color: #64748b;
+  padding: 28px 0;
+}
+
+.app.dark {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.app.dark .panel {
+  background: rgba(15, 23, 42, 0.88);
+  border-color: rgba(148, 163, 184, 0.14);
+}
+
+.app.dark .header p,
+.app.dark .task-meta,
+.app.dark .empty-state {
+  color: #cbd5e1;
+}
+
+.app.dark input,
+.app.dark textarea,
+.app.dark select {
+  background: #111827;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+.app.dark button.secondary {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.app.dark button.danger {
+  background: #ef4444;
+}
+
+.app.dark button:not(.secondary):not(.danger) {
+  background: #2563eb;
+}
+
+@media (max-width: 980px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row,
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}

@@ -31,6 +31,12 @@ router.get('/', async (req, res) => {
     }
 
     const tasks = await Task.find(filter).sort(sort);
+
+    if (sortBy === 'priority') {
+      const order = { high: 1, medium: 2, low: 3 };
+      tasks.sort((a, b) => order[a.priority] - order[b.priority]);
+    }
+
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: 'Failed to load tasks.' });
